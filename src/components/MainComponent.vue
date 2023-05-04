@@ -1,9 +1,16 @@
 <template>
-  <div class="MainComponent">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi dolores numquam, porro officia facilis voluptas accusamus! Ratione officiis odit natus provident aperiam ducimus quidem fuga distinctio consequatur. Velit, dolorum provident?</div>
+  <div class="MainComponent">
+    <thermometer />
+  </div>
 </template>
 <script>
+import thermometer from "@/components/progressTracking/thermometerChange.vue";
+
 export default {
-	name: 'MainComponent'
+  name: "MainComponent",
+  components: {
+    thermometer,
+  },
 };
 </script>
 <style lang="scss" scoped></style>
