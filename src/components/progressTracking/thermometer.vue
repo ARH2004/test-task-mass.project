@@ -2,8 +2,8 @@
   <div class="thermometer">
     <div class="container">
       <div class="thermometer__wrapper">
+        <button @click="contBestResult">click</button>
         <div class="thermometer__scale">
-          <p class="thermometer__null">{{ startBar }}</p>
           <div
             class="thermometer__item"
             v-for="(item, index) in stages"
@@ -35,11 +35,6 @@ export default {
       type: Array,
     },
   },
-  data() {
-    return {
-      startBar: 0,
-    };
-  },
   methods: {
     getImage(item) {
       if (item.id === this.stages.length) {
@@ -52,6 +47,13 @@ export default {
         return "icon-cup";
       }
       return "icon-star";
+    },
+    contBestResult() {
+      let bestResults = this.stages.flatMap((stage) =>
+        stage.games.map((game) => game.bestResult)
+      );
+      let maxBestResult = bestResults.reduce((acc, curr) => acc + curr, 0);
+      console.log(maxBestResult);
     },
   },
 };
@@ -92,18 +94,6 @@ export default {
     position: absolute;
     top: 45px;
     left: -5px;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    text-align: center;
-    letter-spacing: -0.01em;
-    color: #000000;
-    opacity: 0.5;
-  }
-  &__null {
-    position: relative;
-    top: 45px;
-    left: 5px;
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
