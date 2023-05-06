@@ -2,11 +2,10 @@
   <div class="thermometer">
     <div class="container">
       <div class="thermometer__wrapper">
-				{{ contBestResult() }}
         <div
           class="thermometer__scale"
           :style="{
-            'background-image': `linear-gradient(to right, red ${percent}%, rgba(239, 239, 239, 0.6) ${percent}%)`,
+            'background-image': `linear-gradient(to right, #3300FF ${percent}%, rgba(239, 239, 239, 0.6) ${percent}%)`,
           }"
         >
           <div
@@ -89,8 +88,14 @@ mounted() {
     percent = (currentResult / 25) * 15;
   } else if (currentResult <= 50) {
     percent = 15 + ((currentResult - 25) / 25) * 15;
-  } else {
+  } else if (currentResult <= 100) {
     percent = 30 + ((currentResult - 50) / 50) * 15;
+  } else if (currentResult <= 200) {
+    percent = 45.5 + ((currentResult - 100) / 100) * 15;
+  } else if (currentResult <= 500) {
+    percent = 53 + ((currentResult - 200) / 200) * 15;
+  } else {
+    percent = 85 + ((currentResult - 500) / 500) * 15;
   }
   
   this.percent = percent;
