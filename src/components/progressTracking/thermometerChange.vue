@@ -22,7 +22,7 @@ export default {
           games: [
             {
               name: "Игра 1.1",
-              bestResult: 10,
+              bestResult: 0,
               isPlayed: false,
             },
           ],
@@ -58,7 +58,7 @@ export default {
           games: [
             {
               name: "Игра 4.1",
-              bestResult: 230,
+              bestResult: 0,
               isPlayed: false,
             },
           ],

@@ -2,8 +2,12 @@
   <div class="thermometer">
     <div class="container">
       <div class="thermometer__wrapper">
-        <button @click="contBestResult">click</button>
-        <div class="thermometer__scale">
+        <div
+          class="thermometer__scale"
+          :style="{
+            'background-image': `linear-gradient(to right, red ${percent}%, rgba(239, 239, 239, 0.6) ${percent}%)`,
+          }"
+        >
           <div
             class="thermometer__item"
             v-for="(item, index) in stages"
@@ -27,6 +31,7 @@
 <script>
 import cupImg from "@/assets/images/icons/cup.svg";
 import starImg from "@/assets/images/icons/star.svg";
+import starBlueImg from "@/assets/images/icons/starBlue.svg";
 
 export default {
   name: "ProgressBar",
@@ -35,25 +40,46 @@ export default {
       type: Array,
     },
   },
+  data() {
+    return {
+      percent: 15,
+    };
+  },
   methods: {
+    contBestResult() {
+      let bestResults = this.stages.flatMap((stage) =>
+        stage.games.map((game) => game.bestResult)
+      );
+      let maxBestResult = bestResults.reduce((acc, curr) => acc + curr, 0);
+      return maxBestResult;
+    },
+  },
+  methods: {
+    getStarImage(item) {
+      let totalBestResult = this.stages.reduce((acc, stage) => {
+        return (
+          acc +
+          stage.games.reduce((acc, game) => {
+            return acc + game.bestResult;
+          }, 0)
+        );
+      }, 0);
+      if (totalBestResult >= item.thresholdPoints) {
+        return starBlueImg;
+      }
+      return starImg;
+    },
     getImage(item) {
       if (item.id === this.stages.length) {
         return cupImg;
       }
-      return starImg;
+      return this.getStarImage(item);
     },
     getAltText(item) {
       if (item.id === this.stages.length) {
         return "icon-cup";
       }
       return "icon-star";
-    },
-    contBestResult() {
-      let bestResults = this.stages.flatMap((stage) =>
-        stage.games.map((game) => game.bestResult)
-      );
-      let maxBestResult = bestResults.reduce((acc, curr) => acc + curr, 0);
-      console.log(maxBestResult);
     },
   },
 };
@@ -64,17 +90,23 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
 }
+.thermometer__scale-blue {
+  background-color: blue;
+  position: relative;
+  width: 900px;
+  border-radius: 30px;
+  display: flex;
+}
+.thermometer__scale {
+  position: relative;
+  width: 900px;
+  border-radius: 30px;
+  display: flex;
+}
 .thermometer {
-  &__scale {
-    position: relative;
-    width: 900px;
-    background: rgba(239, 239, 239, 0.6);
-    border-radius: 30px;
-    display: flex;
-  }
   &__item {
     position: relative;
-    margin-left: 145px;
+    margin-left: 15%;
   }
   &__image {
     position: absolute;
