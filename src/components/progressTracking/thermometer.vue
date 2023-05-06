@@ -2,6 +2,7 @@
   <div class="thermometer">
     <div class="container">
       <div class="thermometer__wrapper">
+				{{ contBestResult() }}
         <div
           class="thermometer__scale"
           :style="{
@@ -80,11 +81,23 @@ export default {
       return "icon-star";
     },
   },
-  mounted() {
-    // Вызываем функцию, которая связывает значение в процентах с переменной `percent` при создании компонента
-    this.percent = (this.contBestResult() / 25) * 15;
-		console.log(this.percent)
-  },
+mounted() {
+  const currentResult = this.contBestResult();
+  let percent = 0;
+  
+  if (currentResult <= 25) {
+    percent = (currentResult / 25) * 15;
+  } else if (currentResult <= 50) {
+    percent = 15 + ((currentResult - 25) / 25) * 15;
+  } else {
+    percent = 30 + ((currentResult - 50) / 50) * 15;
+  }
+  
+  this.percent = percent;
+  console.log(this.percent);
+}
+
+
 };
 </script>
 
