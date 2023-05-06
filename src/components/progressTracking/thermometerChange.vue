@@ -58,7 +58,7 @@ export default {
           games: [
             {
               name: "Игра 4.1",
-              bestResult: 800,
+              bestResult: 0,
               isPlayed: false,
             },
           ],
