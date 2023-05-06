@@ -42,7 +42,7 @@ export default {
   },
   data() {
     return {
-      percent: 15,
+      percent: 0, // Изменяем значение переменной `percent` на 0
     };
   },
   methods: {
@@ -53,8 +53,6 @@ export default {
       let maxBestResult = bestResults.reduce((acc, curr) => acc + curr, 0);
       return maxBestResult;
     },
-  },
-  methods: {
     getStarImage(item) {
       let totalBestResult = this.stages.reduce((acc, stage) => {
         return (
@@ -82,8 +80,14 @@ export default {
       return "icon-star";
     },
   },
+  mounted() {
+    // Вызываем функцию, которая связывает значение в процентах с переменной `percent` при создании компонента
+    this.percent = (this.contBestResult() / 25) * 15;
+		console.log(this.percent)
+  },
 };
 </script>
+
 
 <style lang="scss" scoped>
 .container {
