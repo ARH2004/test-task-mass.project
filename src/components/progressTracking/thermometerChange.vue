@@ -82,7 +82,7 @@ export default {
           games: [
             {
               name: "Игра 6.1",
-              bestResult: 0,
+              bestResult: 120,
               isPlayed: false,
             },
             {
@@ -101,7 +101,7 @@ export default {
 .mechanics {
 	margin: 100px;
 	&__title {
-		margin-bottom: 40px;
+		margin-bottom: 70px;
 		font-size: 30px;
 	}
 }
