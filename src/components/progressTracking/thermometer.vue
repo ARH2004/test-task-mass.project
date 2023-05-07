@@ -72,9 +72,9 @@ export default {
       } else if (currentResult <= 100) {
         percent = 30 + ((currentResult - 50) / 50) * 15;
       } else if (currentResult <= 200) {
-        percent = 46 + ((currentResult - 100) / 100) * 15;
+        percent = 45 + ((currentResult - 100) / 100) * 15;
       } else if (currentResult <= 500) {
-        percent = 55 + ((currentResult - 200) / 200) * 15;
+        percent = 60 + ((currentResult - 200) / 200) * 15;
       } else {
         percent = 85 + ((currentResult - 500) / 500) * 15;
       }
@@ -143,9 +143,6 @@ export default {
     bottom: 45px;
     left: -10px;
   }
-	&__progressPoint {
-
-	}
   &__scale {
     position: relative;
     width: 900px;

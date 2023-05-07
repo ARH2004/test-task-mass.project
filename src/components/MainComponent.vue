@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import thermometer from "@/components/progressTracking/thermometerChange.vue";
+import thermometer from "@/components/progressTracking/AppProgress.vue";
 
 export default {
   name: "MainComponent",
