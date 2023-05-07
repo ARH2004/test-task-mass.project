@@ -2,19 +2,19 @@
   <div class="thermometer">
     <div class="container">
       <div class="thermometer__wrapper">
-        {{ contBestResult() }}
+        {{ contBestResult }}
         <div
           class="thermometer__scale"
           :style="{
             'background-image': `linear-gradient(to right, #3300FF ${percent}%, rgba(239, 239, 239, 0.6) ${percent}%)`,
           }"
         >
-				<p class="thermometer__start">{{ countStart }}</p>
+          <p class="thermometer__start">{{ countStart }}</p>
           <div
             class="thermometer__item"
             v-for="(item, index) in stages"
             :key="item.id"
-						:class="{lastEl : index < stages.length - 1 === false}"
+            :class="{ lastEl: index < stages.length - 1 === false }"
           >
             <div class="thermometer__image">
               <img :src="getImage(item)" :alt="getAltText(item)" />
@@ -23,9 +23,9 @@
             <hr class="thermometer__line" v-if="index < stages.length - 1" />
             <div class="thermometer__number">
               {{ item.thresholdPoints }}
-						<div class="test" v-if="item.thresholdPoints >= contBestResult()">
-              {{ contBestResult() }}
-            </div>
+              <div class="test" v-if="shouldShowFlag(item)">
+                {{ contBestResult }}
+              </div>
             </div>
           </div>
         </div>
@@ -49,16 +49,47 @@ export default {
   data() {
     return {
       percent: 0,
-			countStart: 0,
+      countStart: 0,
+      previousItem: null
     };
   },
-  methods: {
+	computed: {
     contBestResult() {
       let bestResults = this.stages.flatMap((stage) =>
         stage.games.map((game) => game.bestResult)
       );
       let maxBestResult = bestResults.reduce((acc, curr) => acc + curr, 0);
       return maxBestResult;
+    },
+		  percent() {
+    const currentResult = this.contBestResult;
+    let percent = 0;
+
+    if (currentResult <= 25) {
+      percent = (currentResult / 25) * 15;
+    } else if (currentResult <= 50) {
+      percent = 15 + ((currentResult - 25) / 25) * 15;
+    } else if (currentResult <= 100) {
+      percent = 30 + ((currentResult - 50) / 50) * 15;
+    } else if (currentResult <= 200) {
+      percent = 46 + ((currentResult - 100) / 100) * 15;
+    } else if (currentResult <= 500) {
+      percent = 55 + ((currentResult - 200) / 200) * 15;
+    } else {
+      percent = 85 + ((currentResult - 500) / 500) * 15;
+    }
+
+    return percent;
+  },
+	},
+  methods: {
+		shouldShowFlag(item) {
+      let showFlag = false;
+      if (this.previousItem !== null && item.thresholdPoints >= this.contBestResult && this.previousItem.thresholdPoints < this.contBestResult) {
+        showFlag = true;
+      }
+      this.previousItem = item;
+      return showFlag;
     },
     getStarImage(item) {
       let totalBestResult = this.stages.reduce((acc, stage) => {
@@ -87,26 +118,6 @@ export default {
       return "icon-star";
     },
   },
-  mounted() {
-    const currentResult = this.contBestResult();
-    let percent = 0;
-
-    if (currentResult <= 25) {
-      percent = (currentResult / 25) * 15;
-    } else if (currentResult <= 50) {
-      percent = 15 + ((currentResult - 25) / 25) * 15;
-    } else if (currentResult <= 100) {
-      percent = 30 + ((currentResult - 50) / 50) * 15;
-    } else if (currentResult <= 200) {
-      percent = 45.5 + ((currentResult - 100) / 100) * 15;
-    } else if (currentResult <= 500) {
-      percent = 55 + ((currentResult - 200) / 200) * 15;
-    } else {
-      percent = 85 + ((currentResult - 500) / 500) * 15;
-    }
-
-    this.percent = percent;
-  },
 };
 </script>
 
@@ -116,7 +127,7 @@ export default {
   margin: 0 auto;
 }
 .lastEl {
-	left: 5%;
+  left: 5%;
 }
 .thermometer {
   &__item {
@@ -134,11 +145,11 @@ export default {
     border-radius: 30px;
     display: flex;
   }
-	&__start {
-		position: relative;
+  &__start {
+    position: relative;
     top: 45px;
     left: 10px;
-		z-index: 123;
+    z-index: 123;
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
@@ -146,7 +157,7 @@ export default {
     letter-spacing: -0.01em;
     color: #000000;
     opacity: 0.5;
-	}
+  }
   &__line {
     position: relative;
     top: 0px;
