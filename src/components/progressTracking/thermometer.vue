@@ -23,6 +23,9 @@
             <hr class="thermometer__line" v-if="index < stages.length - 1" />
             <div class="thermometer__number">
               {{ item.thresholdPoints }}
+						<div class="test" v-if="item.thresholdPoints >= contBestResult()">
+              {{ contBestResult() }}
+            </div>
             </div>
           </div>
         </div>
@@ -46,7 +49,7 @@ export default {
   data() {
     return {
       percent: 0,
-			countStart: 0
+			countStart: 0,
     };
   },
   methods: {
