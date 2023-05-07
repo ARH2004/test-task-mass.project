@@ -48,7 +48,6 @@ export default {
   },
   data() {
     return {
-      percent: 0,
       countStart: 0,
       previousItem: null
     };
