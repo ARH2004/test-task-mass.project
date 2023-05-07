@@ -2,7 +2,6 @@
   <div class="thermometer">
     <div class="container">
       <div class="thermometer__wrapper">
-        {{ contBestResult }}
         <div
           class="thermometer__scale"
           :style="{
@@ -22,10 +21,12 @@
             <!-- Проверяем, не является ли текущий элемент последним элементом массива `stages` -->
             <hr class="thermometer__line" v-if="index < stages.length - 1" />
             <div class="thermometer__number">
-              {{ item.thresholdPoints }}
-              <div class="test" v-if="shouldShowFlag(item)">
-                {{ contBestResult }}
+							<div class="thermometer__progressPoint" v-if="shouldShowFlag(item)">
+                {{ contBestResult }}/
               </div>
+							<div class="thermometer__reqPint">
+              	{{ item.thresholdPoints }}
+							</div>
             </div>
           </div>
         </div>
@@ -49,10 +50,10 @@ export default {
   data() {
     return {
       countStart: 0,
-      previousItem: null
+      previousItem: null,
     };
   },
-	computed: {
+  computed: {
     contBestResult() {
       let bestResults = this.stages.flatMap((stage) =>
         stage.games.map((game) => game.bestResult)
@@ -60,31 +61,35 @@ export default {
       let maxBestResult = bestResults.reduce((acc, curr) => acc + curr, 0);
       return maxBestResult;
     },
-		  percent() {
-    const currentResult = this.contBestResult;
-    let percent = 0;
+    percent() {
+      const currentResult = this.contBestResult;
+      let percent = 0;
 
-    if (currentResult <= 25) {
-      percent = (currentResult / 25) * 15;
-    } else if (currentResult <= 50) {
-      percent = 15 + ((currentResult - 25) / 25) * 15;
-    } else if (currentResult <= 100) {
-      percent = 30 + ((currentResult - 50) / 50) * 15;
-    } else if (currentResult <= 200) {
-      percent = 46 + ((currentResult - 100) / 100) * 15;
-    } else if (currentResult <= 500) {
-      percent = 55 + ((currentResult - 200) / 200) * 15;
-    } else {
-      percent = 85 + ((currentResult - 500) / 500) * 15;
-    }
+      if (currentResult <= 25) {
+        percent = (currentResult / 25) * 15;
+      } else if (currentResult <= 50) {
+        percent = 15 + ((currentResult - 25) / 25) * 15;
+      } else if (currentResult <= 100) {
+        percent = 30 + ((currentResult - 50) / 50) * 15;
+      } else if (currentResult <= 200) {
+        percent = 46 + ((currentResult - 100) / 100) * 15;
+      } else if (currentResult <= 500) {
+        percent = 55 + ((currentResult - 200) / 200) * 15;
+      } else {
+        percent = 85 + ((currentResult - 500) / 500) * 15;
+      }
 
-    return percent;
+      return percent;
+    },
   },
-	},
   methods: {
-		shouldShowFlag(item) {
+    shouldShowFlag(item) {
       let showFlag = false;
-      if (this.previousItem !== null && item.thresholdPoints >= this.contBestResult && this.previousItem.thresholdPoints < this.contBestResult) {
+      if (
+        this.previousItem !== null &&
+        item.thresholdPoints >= this.contBestResult &&
+        this.previousItem.thresholdPoints < this.contBestResult
+      ) {
         showFlag = true;
       }
       this.previousItem = item;
@@ -138,6 +143,9 @@ export default {
     bottom: 45px;
     left: -10px;
   }
+	&__progressPoint {
+
+	}
   &__scale {
     position: relative;
     width: 900px;
@@ -177,6 +185,7 @@ export default {
     letter-spacing: -0.01em;
     color: #000000;
     opacity: 0.5;
+		display: flex;
   }
 }
 </style>
